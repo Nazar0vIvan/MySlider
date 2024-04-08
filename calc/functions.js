@@ -6,26 +6,20 @@ export function shift(arr, reverse) {
 /*
 const slides = [
   {
-    id: -3,
+    id: 0,
     title: "C++",
   },
   {
-    id: -2,
+    id: 1,
     title: "JavaScript",
   },
   {
-    id: -1,
+    id: 2,
     title: "React",
   },
 ];
 
-let result = [];
-slides.forEach((slide) => {
-  const { id, title, icon } = slide;
-  result.push(id);
-});
+const arr = slides.map((slide) => slide.id);
 
-console.log(result);
-shift(result);
-console.log(result);
+console.log(arr);
 */

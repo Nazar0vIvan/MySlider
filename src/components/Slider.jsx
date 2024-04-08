@@ -1,37 +1,27 @@
-import { useMemo, useState } from "react";
+import { useMemo, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import { Slide } from "./Slide";
 import { shift } from "../../calc/functions";
 
 export function Slider({ slides }) {
-  const [activeSlide, setActiveSlide] = useState(0);
+  const [offsets, setOffsets] = useState(slides.map((slide) => slide.offset));
 
-  const ids = useMemo(() => {
-    let result = [];
-    slides.forEach((slide) => {
-      result.push(slide.id);
-    });
-
-    for (let i = 0; i < Math.abs(activeSlide); ++i) {
-      shift(result, activeSlide > 0);
+  function handleClick(offset) {
+    let newOffsets = [...offsets]; // copy
+    for (let i = 0; i < Math.abs(offset); ++i) {
+      shift(newOffsets, offset > 0);
     }
-    return result;
-  }, [activeSlide]);
-
-  function handleClick(index) {
-    if (activeSlide == index) return;
-    setActiveSlide(index);
-    console.log("beep");
+    setOffsets(newOffsets);
   }
 
   return (
     <div id="slider">
-      {slides.map((slide, index) => {
+      {slides.map((slide, i) => {
         const { id, title, icon } = slide;
         return (
           <Slide
             key={id}
-            id={ids[index]}
+            offset={offsets[i]}
             icon={icon}
             handleClick={handleClick}
           />
