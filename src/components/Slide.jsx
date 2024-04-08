@@ -1,10 +1,8 @@
-import { useEffect } from "react";
-
-export function Slide({ offset, icon, handleClick }) {
+export function Slide({ offset, icon, handleSlideClick }) {
   const style = {
     transform: `translate3d(${
       Math.sign(offset) *
-      (Math.pow(4.5, Math.abs(offset)) + 250 * Math.abs(offset) - 60)
+      (10 * Math.pow(Math.abs(offset), 2) + 300 * Math.abs(offset) - 50)
     }px, 0, ${-Math.abs(offset) * 1000}px)`,
     filter: `brightness(${100 - 20 * Math.abs(offset)}%)`,
   };
@@ -15,7 +13,7 @@ export function Slide({ offset, icon, handleClick }) {
       src={icon}
       style={style}
       onClick={() => {
-        handleClick(offset);
+        handleSlideClick(offset);
       }}
     />
   );

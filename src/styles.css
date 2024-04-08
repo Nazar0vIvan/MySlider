@@ -46,10 +46,22 @@ body {
   width: 100px;
   transform-style: preserve-3d;
   perspective: 1600px;
+
 }
 
 .slide {
   position: absolute;
   height: 100%;
   transition: transform 0.3s ease-in-out;
+}
+
+
+.container {
+  display: flex;
+  column-gap: 50px;
+}
+
+.btn-next {
+  position: absolute;
+  transform: translate3d(940px, 0, -3000px)
 }
