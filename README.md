@@ -1,2 +1,1 @@
-# MySlider
 React Slider Implementation
