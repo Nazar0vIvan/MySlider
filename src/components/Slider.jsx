@@ -1,10 +1,12 @@
 import { useMemo, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import { Slide } from "./Slide";
-import { shift } from "../../calc/functions";
+import { linspace, shift } from "../../calc/functions";
 
-export function Slider({ slides }) {
-  const [offsets, setOffsets] = useState(slides.map((slide) => slide.offset));
+export function Slider({ slides, scale }) {
+  const [offsets, setOffsets] = useState(
+    linspace(-Math.floor(slides.length / 2), slides.length)
+  );
 
   function handleSlideClick(offset) {
     let newOffsets = [...offsets]; // copy
@@ -27,13 +29,15 @@ export function Slider({ slides }) {
         onClick={handlePrevBtnClick}
       ></input>
       <div id="slider">
-        {slides.map((slide, i) => {
+        {slides.map((slide, i, array) => {
           const { id, title, icon } = slide;
+          const n = array.length;
           return (
             <Slide
               key={id}
-              offset={offsets[i]}
               icon={icon}
+              offset={offsets[i]}
+              scale={scale}
               handleSlideClick={handleSlideClick}
             />
           );

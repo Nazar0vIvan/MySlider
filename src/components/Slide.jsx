@@ -1,4 +1,4 @@
-export function Slide({ offset, icon, handleSlideClick }) {
+export function Slide({ offset, icon, scale, handleSlideClick }) {
   const style = {
     transform: `translate3d(${
       Math.sign(offset) *

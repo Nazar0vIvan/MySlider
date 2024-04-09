@@ -3,6 +3,10 @@ export function shift(arr, reverse) {
   else arr.push(arr.shift());
 }
 
+export function linspace(start, num) {
+  return Array.from({ length: num }, (_, i) => start + i);
+}
+
 /*
 const slides = [
   {

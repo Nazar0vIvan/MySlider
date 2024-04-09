@@ -2,43 +2,36 @@
   "cards": [
     {
       "id": 0,
-      "offset": -3,
       "title": "C++",
       "icon": "logo-cpp.svg"
     },
     {
       "id": 1,
-      "offset": -2,
       "title": "JavaScript",
       "icon": "logo-js.svg"
     },
     {
       "id": 2,
-      "offset": -1,
       "title": "React",
       "icon": "logo-react.svg"
     },
     {
       "id": 3,
-      "offset": 0,
       "title": "QML",
       "icon": "logo-qml.svg"
     },
     {
       "id": 4,
-      "offset": 1,
       "title": "Python",
       "icon": "logo-python.svg"
     },
     {
       "id": 5,
-      "offset": 2,
       "title": "CMake",
       "icon": "logo-cmake.svg"
     },
     {
       "id": 6,
-      "offset": 3,
       "title": "houdini",
       "icon": "logo-houdini.svg"
     }
