@@ -6,7 +6,7 @@ function Home() {
   const slides = useLoaderData();
   return (
     <div className="home">
-      <Slider slides={slides} scale={0.8} />
+      <Slider slides={slides} scale={0.7} gap={30} />
     </div>
   );
 }

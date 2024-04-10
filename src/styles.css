@@ -40,28 +40,35 @@ body {
 
 /* SLIDER */
 
+.container {
+  position: relative;
+}
+
+.btn-prev {
+  position: absolute;
+}
+
+.btn-next {
+  position: absolute;
+}
+
 #slider {
   position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   height: 100px;
   width: 100px;
   transform-style: preserve-3d;
   perspective: 1600px;
-
 }
 
 .slide {
   position: absolute;
   height: 100%;
-  transition: transform 0.3s ease-in-out;
+  transition: transform 0.3s ease-in-out, margin-bottom 0.2s;
 }
 
-
-.container {
-  display: flex;
-  column-gap: 50px;
-}
-
-.btn-next {
-  position: absolute;
-  transform: translate3d(940px, 0, -3000px)
+.slide:hover {
+  margin-bottom: 15%;
 }

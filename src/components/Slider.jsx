@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { Slide } from "./Slide";
 import { linspace, shift } from "../../calc/functions";
 
-export function Slider({ slides, scale }) {
+export function Slider({ slides, scale, gap }) {
   const [offsets, setOffsets] = useState(
     linspace(-Math.floor(slides.length / 2), slides.length)
   );
@@ -18,16 +18,11 @@ export function Slider({ slides, scale }) {
 
   function handleNextBtnClick() {}
 
-  function handlePrevBtnClick() {}
+  function handlePrevBtnClicnpmk() {}
 
   return (
     <div className="container">
-      <input
-        type="image"
-        className="btn-prev"
-        src="arrow-prev.svg"
-        onClick={handlePrevBtnClick}
-      ></input>
+      <input type="image" className="btn-prev" src="arrow-prev.svg"></input>
       <div id="slider">
         {slides.map((slide, i, array) => {
           const { id, title, icon } = slide;
@@ -38,17 +33,13 @@ export function Slider({ slides, scale }) {
               icon={icon}
               offset={offsets[i]}
               scale={scale}
+              gap={gap}
               handleSlideClick={handleSlideClick}
             />
           );
         })}
       </div>
-      <input
-        type="image"
-        className="btn-next"
-        src="arrow-next.svg"
-        onClick={handlePrevBtnClick}
-      ></input>
+      <input type="image" className="btn-next" src="arrow-next.svg"></input>
     </div>
   );
 }
