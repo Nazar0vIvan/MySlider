@@ -7,6 +7,14 @@ export function linspace(start, num) {
   return Array.from({ length: num }, (_, i) => start + i);
 }
 
+export function restSum(value, n) {
+  let sum = 0;
+  for (let i = 1; i <= n - 1; ++i) {
+    sum += Math.pow(value, i);
+  }
+  sum += Math.pow(value, n) / 2;
+  return sum;
+}
 /*
 const slides = [
   {

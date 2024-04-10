@@ -42,14 +42,16 @@ body {
 
 .container {
   position: relative;
+  display: flex;
+  align-items: center;
 }
 
 .btn-prev {
-  position: absolute;
+  position: relative;
 }
 
 .btn-next {
-  position: absolute;
+  position: relative;
 }
 
 #slider {

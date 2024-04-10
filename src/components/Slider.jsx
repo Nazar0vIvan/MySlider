@@ -8,6 +8,8 @@ export function Slider({ slides, scale, gap }) {
     linspace(-Math.floor(slides.length / 2), slides.length)
   );
 
+  const width = useMemo(() => {}, [scale, gap]);
+
   function handleSlideClick(offset) {
     let newOffsets = [...offsets]; // copy
     for (let i = 0; i < Math.abs(offset); ++i) {

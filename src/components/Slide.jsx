@@ -1,4 +1,5 @@
 import { useMemo } from "react";
+import { restSum } from "../../calc/functions";
 
 export function Slide({ offset, icon, scale, gap, handleSlideClick }) {
   /*
@@ -19,15 +20,6 @@ export function Slide({ offset, icon, scale, gap, handleSlideClick }) {
   const style = useMemo(() => {
     const w = 100;
     const a = Math.abs(offset);
-
-    function restSum(value, n) {
-      let sum = 0;
-      for (let i = 1; i <= n - 1; ++i) {
-        sum += Math.pow(value, i);
-      }
-      sum += Math.pow(value, n) / 2;
-      return sum;
-    }
 
     const dz = -1600 * (1 / Math.pow(scale, a) - 1);
     const dx =
