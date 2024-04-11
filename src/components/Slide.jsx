@@ -1,8 +1,7 @@
-import { useContext, useEffect, useMemo, useRef, useState } from "react";
-import { restSum } from "../../calc/functions";
-import { SliderContext } from "./Slider";
+import { useContext, useRef } from "react";
+import { SliderContext } from "./PerspectiveSlider";
 
-export function Slide({ children, offsetIndex, style, handleSlideClick }) {
+export function Slide({ offsetIndex, style, handleSlideClick, children }) {
   const slideRef = useRef();
   const { scale, gap } = useContext(SliderContext);
 
@@ -11,7 +10,9 @@ export function Slide({ children, offsetIndex, style, handleSlideClick }) {
       className="slide"
       ref={slideRef}
       style={style}
-      onClick={handleSlideClick}
+      onClick={() => {
+        handleSlideClick(offsetIndex);
+      }}
     >
       {children}
     </div>

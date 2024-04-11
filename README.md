@@ -1,1 +1,1 @@
-React Slider Implementation
+React 3D perspective slider implementation

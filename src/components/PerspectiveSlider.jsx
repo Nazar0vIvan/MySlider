@@ -2,16 +2,19 @@ import {
   cloneElement,
   createContext,
   useCallback,
-  useEffect,
-  useRef,
+  useMemo,
   useState,
 } from "react";
-import { Link } from "react-router-dom";
 import { linspace, restSum, shift } from "../../calc/functions";
 
 export const SliderContext = createContext(null);
 
-export function Slider({ children, scale, gap }) {
+export function PerspectiveSlider({
+  children,
+  className = "",
+  scale = 1,
+  gap = 0,
+}) {
   const [offsets, setOffsets] = useState(
     linspace(-Math.floor(children.length / 2), children.length)
   );
@@ -21,11 +24,12 @@ export function Slider({ children, scale, gap }) {
     for (let i = 0; i < Math.abs(offset); ++i) {
       shift(newOffsets, offset > 0);
     }
-    console.log("beep");
     setOffsets(newOffsets);
   });
 
-  function renderSlides() {
+  const width = useMemo(() => {}, [scale, gap]);
+
+  const renderSlides = useCallback(() => {
     return children.map((child, index) => {
       const offsetIndex = offsets[index];
 
@@ -41,8 +45,10 @@ export function Slider({ children, scale, gap }) {
       const br = 100 - 20 * a;
 
       const style = {
-        transform: `translate3d(${dx}px, ${dy}px, ${dz}px)`,
-        filter: `brightness(${br}%)`,
+        "--dx": `${dx}px`,
+        "--dy": `${dy}px`,
+        "--dz": `${dz}px`,
+        "--br": `${br}%`,
       };
 
       return cloneElement(child, {
@@ -51,11 +57,11 @@ export function Slider({ children, scale, gap }) {
         handleSlideClick,
       });
     });
-  }
+  });
 
   return (
-    <SliderContext.Provider value={{ scale, gap }}>
-      <div id="slider">{renderSlides()}</div>
+    <SliderContext.Provider value={{}}>
+      <div className={className}>{renderSlides()}</div>
     </SliderContext.Provider>
   );
 }

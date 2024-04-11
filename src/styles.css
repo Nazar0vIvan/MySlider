@@ -54,7 +54,7 @@ body {
   position: relative;
 }
 
-#slider {
+.slider {
   position: relative;
   display: flex;
   justify-content: center;
@@ -67,16 +67,21 @@ body {
 
 .slide {
   position: absolute;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   height: 100%;
   width: 100px;
-  transition: transform 0.3s ease-in-out, margin-bottom 0.2s;
+  transition: transform 0.3s ease-in-out, filter 0.3s;
+  transform: translate3d(var(--dx), var(--dy), var(--dz));
+  filter: brightness(var(--br)) drop-shadow(0px 0px 0px transparent);
+}
+
+.slide:hover {
+  filter: brightness(100%) drop-shadow(0px 0px 20px var(--color-background-elevation-2));
 }
 
 .slide-icon {
   height: 100%;
   width: 100px;
-}
-
-.slide:hover {
-  margin-bottom: 15%;
 }
