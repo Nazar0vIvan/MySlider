@@ -1,14 +1,74 @@
-import { useMemo, useRef, useState } from "react";
+import {
+  cloneElement,
+  createContext,
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 import { Link } from "react-router-dom";
-import { Slide } from "./Slide";
-import { linspace, shift } from "../../calc/functions";
+import { linspace, restSum, shift } from "../../calc/functions";
 
+export const SliderContext = createContext(null);
+
+export function Slider({ children, scale, gap }) {
+  const [offsets, setOffsets] = useState(
+    linspace(-Math.floor(children.length / 2), children.length)
+  );
+
+  const handleSlideClick = useCallback((offset) => {
+    let newOffsets = [...offsets]; // copy
+    for (let i = 0; i < Math.abs(offset); ++i) {
+      shift(newOffsets, offset > 0);
+    }
+    console.log("beep");
+    setOffsets(newOffsets);
+  });
+
+  function renderSlides() {
+    return children.map((child, index) => {
+      const offsetIndex = offsets[index];
+
+      const w = 100;
+      const a = Math.abs(offsetIndex);
+
+      const dz = -1600 * (1 / Math.pow(scale, a) - 1);
+      const dx =
+        Math.sign(offsetIndex) *
+        (w / 2 + a * gap + w * restSum(scale, a)) *
+        (Math.abs(dz) / 1600 + 1);
+      const dy = 0;
+      const br = 100 - 20 * a;
+
+      const style = {
+        transform: `translate3d(${dx}px, ${dy}px, ${dz}px)`,
+        filter: `brightness(${br}%)`,
+      };
+
+      return cloneElement(child, {
+        offsetIndex,
+        style,
+        handleSlideClick,
+      });
+    });
+  }
+
+  return (
+    <SliderContext.Provider value={{ scale, gap }}>
+      <div id="slider">{renderSlides()}</div>
+    </SliderContext.Provider>
+  );
+}
+
+/* 
 export function Slider({ slides, scale, gap }) {
   const [offsets, setOffsets] = useState(
     linspace(-Math.floor(slides.length / 2), slides.length)
   );
 
-  const width = useMemo(() => {}, [scale, gap]);
+  useEffect(() => {
+    console.log(children);
+  }, []);
 
   function handleSlideClick(offset) {
     let newOffsets = [...offsets]; // copy
@@ -46,16 +106,4 @@ export function Slider({ slides, scale, gap }) {
   );
 }
 
-/*      
-{slides.map((slide, index) => {
-    return (
-      <input
-        key={index}
-        type="radio"
-        id={`s${index}`}
-        name="slider"
-        defaultChecked={index === 0}
-      ></input>
-    );
-})} 
-*/
+ */

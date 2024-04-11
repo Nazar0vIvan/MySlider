@@ -1,24 +1,30 @@
-import { useMemo } from "react";
+import { useContext, useEffect, useMemo, useRef, useState } from "react";
 import { restSum } from "../../calc/functions";
+import { SliderContext } from "./Slider";
 
+export function Slide({ children, offsetIndex, style, handleSlideClick }) {
+  const slideRef = useRef();
+  const { scale, gap } = useContext(SliderContext);
+
+  return (
+    <div
+      className="slide"
+      ref={slideRef}
+      style={style}
+      onClick={handleSlideClick}
+    >
+      {children}
+    </div>
+  );
+}
+
+/*
 export function Slide({ offset, icon, scale, gap, handleSlideClick }) {
-  /*
-  const style = {
-    "--dx": `calc(${Math.sign(offset)} * (50% * (${
-      Math.pow(1 / scale, Math.abs(offset)) - 1
-    }) + ${Math.abs(offset) * gap}px + 100% * ${inverseFracSum(
-      scale,
-      Math.abs(offset)
-    )}))`,
-    transform: `translate3d(var(--dx), 0, ${
-      -1600 * (1 / Math.pow(scale, Math.abs(offset)) - 1)
-    }px)`,
-    filter: `brightness(${100 - 20 * Math.abs(offset)}%)`,
-  };
-  */
+  const slideRef = useRef(null);
+  const [style, setStyle] = useState({});
 
-  const style = useMemo(() => {
-    const w = 100;
+  useEffect(() => {
+    const w = slideRef.current.clientWidth;
     const a = Math.abs(offset);
 
     const dz = -1600 * (1 / Math.pow(scale, a) - 1);
@@ -29,14 +35,16 @@ export function Slide({ offset, icon, scale, gap, handleSlideClick }) {
     const dy = 0;
     const br = 100 - 20 * a;
 
-    return {
+    setStyle({
       transform: `translate3d(${dx}px, ${dy}px, ${dz}px)`,
       filter: `brightness(${br}%)`,
-    };
-  }, [offset, gap, scale]);
+    });
+    console.log("bip");
+  }, [offset, scale, gap]);
 
   return (
     <img
+      ref={slideRef}
       className="slide"
       src={icon}
       style={style}
@@ -46,3 +54,4 @@ export function Slide({ offset, icon, scale, gap, handleSlideClick }) {
     />
   );
 }
+*/

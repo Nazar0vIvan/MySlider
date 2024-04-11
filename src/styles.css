@@ -68,7 +68,13 @@ body {
 .slide {
   position: absolute;
   height: 100%;
+  width: 100px;
   transition: transform 0.3s ease-in-out, margin-bottom 0.2s;
+}
+
+.slide-icon {
+  height: 100%;
+  width: 100px;
 }
 
 .slide:hover {
