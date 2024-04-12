@@ -2,10 +2,12 @@ import {
   cloneElement,
   createContext,
   useCallback,
+  useEffect,
   useMemo,
+  useRef,
   useState,
 } from "react";
-import { linspace, restSum, shift } from "../../calc/functions";
+import { linspace, powerSeriesSum, shift } from "../../calc/functions";
 
 export const SliderContext = createContext(null);
 
@@ -18,6 +20,27 @@ export function PerspectiveSlider({
   const [offsets, setOffsets] = useState(
     linspace(-Math.floor(children.length / 2), children.length)
   );
+  const slideRef = useRef();
+  const sliderRef = useRef();
+
+  const updateSize = useCallback(() => {
+    const w = slideRef.current.clientWidth;
+    const n = children.length;
+    const k = n % 2 == 0 ? 1 : 2;
+    const sliderWidth =
+      w +
+      (n - 1) * gap +
+      w *
+        (2 * powerSeriesSum(scale, Math.floor(n / 2) - 1) +
+          k * Math.pow(scale, Math.floor(n / 2)));
+
+    sliderRef.current.style.width = `${sliderWidth}px`;
+    sliderRef.current.style.height = `${slideRef.current.clientHeight}px`;
+  });
+
+  useEffect(() => {
+    updateSize();
+  }, []);
 
   const handleSlideClick = useCallback((offset) => {
     let newOffsets = [...offsets]; // copy
@@ -27,41 +50,40 @@ export function PerspectiveSlider({
     setOffsets(newOffsets);
   });
 
-  const width = useMemo(() => {}, [scale, gap]);
-
-  const renderSlides = useCallback(() => {
+  function renderSlides() {
     return children.map((child, index) => {
+      const perspective = 1;
       const offsetIndex = offsets[index];
+      const f = Math.abs(offsetIndex);
+      const dz = -perspective * (1 / Math.pow(scale, f) - 1);
+      const perspectiveScale = Math.abs(dz) / perspective + 1;
+      const sign = Math.sign(offsetIndex);
+      const dx = `calc(${sign} * ${perspectiveScale} * (50% + ${
+        f * gap
+      }px + 100% * ${powerSeriesSum(scale, f - 1) + Math.pow(scale, f) / 2}))`;
 
-      const w = 100;
-      const a = Math.abs(offsetIndex);
-
-      const dz = -1600 * (1 / Math.pow(scale, a) - 1);
-      const dx =
-        Math.sign(offsetIndex) *
-        (w / 2 + a * gap + w * restSum(scale, a)) *
-        (Math.abs(dz) / 1600 + 1);
-      const dy = 0;
-      const br = 100 - 20 * a;
+      const br = 100 - 20 * f;
 
       const style = {
-        "--dx": `${dx}px`,
-        "--dy": `${dy}px`,
+        "--dx": `${dx}`,
         "--dz": `${dz}px`,
         "--br": `${br}%`,
       };
 
       return cloneElement(child, {
+        ref: slideRef,
         offsetIndex,
         style,
         handleSlideClick,
       });
     });
-  });
+  }
 
   return (
     <SliderContext.Provider value={{}}>
-      <div className={className}>{renderSlides()}</div>
+      <div ref={sliderRef} className={`${className} perspective`}>
+        {renderSlides()}
+      </div>
     </SliderContext.Provider>
   );
 }

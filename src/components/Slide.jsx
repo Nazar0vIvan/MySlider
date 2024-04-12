@@ -1,14 +1,19 @@
-import { useContext, useRef } from "react";
-import { SliderContext } from "./PerspectiveSlider";
+import { forwardRef, useContext, useRef } from "react";
 
-export function Slide({ offsetIndex, style, handleSlideClick, children }) {
-  const slideRef = useRef();
-  const { scale, gap } = useContext(SliderContext);
-
+export const Slide = forwardRef(function Slide(
+  {
+    children,
+    className = "",
+    offsetIndex = 0,
+    style = {},
+    handleSlideClick = () => {},
+  },
+  ref
+) {
   return (
     <div
-      className="slide"
-      ref={slideRef}
+      className={className}
+      ref={ref}
       style={style}
       onClick={() => {
         handleSlideClick(offsetIndex);
@@ -17,7 +22,7 @@ export function Slide({ offsetIndex, style, handleSlideClick, children }) {
       {children}
     </div>
   );
-}
+});
 
 /*
 export function Slide({ offset, icon, scale, gap, handleSlideClick }) {

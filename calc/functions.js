@@ -7,14 +7,22 @@ export function linspace(start, num) {
   return Array.from({ length: num }, (_, i) => start + i);
 }
 
-export function restSum(value, n) {
+export function powerSeriesSum(value, n) {
   let sum = 0;
-  for (let i = 1; i <= n - 1; ++i) {
+  for (let i = 1; i <= n; ++i) {
     sum += Math.pow(value, i);
   }
-  sum += Math.pow(value, n) / 2;
   return sum;
 }
+
+export function inversePowerSeriesSum(value, n) {
+  let sum = 0;
+  for (let i = 1; i <= n; ++i) {
+    sum += Math.pow(1 / value, i);
+  }
+  return sum;
+}
+
 /*
 const slides = [
   {

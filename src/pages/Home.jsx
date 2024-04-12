@@ -7,17 +7,25 @@ function Home() {
   const slides = useLoaderData();
   return (
     <div className="home">
-      <input type="image" className="btn-prev" src="arrow-prev.svg"></input>
+      <input
+        type="image"
+        className="slider-btn-prev"
+        src="arrow-prev.svg"
+      ></input>
       <PerspectiveSlider className="slider" scale={0.7} gap={50}>
         {slides.map(({ id, title, icon }) => {
           return (
-            <Slide key={id}>
+            <Slide key={id} className="slide">
               <img className="slide-icon" src={icon} />
             </Slide>
           );
         })}
       </PerspectiveSlider>
-      <input type="image" className="btn-next" src="arrow-next.svg"></input>
+      <input
+        type="image"
+        className="slider-btn-next"
+        src="arrow-next.svg"
+      ></input>
     </div>
   );
 }
