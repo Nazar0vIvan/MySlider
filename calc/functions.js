@@ -1,10 +1,14 @@
-export function shift(arr, reverse) {
+export function createSymmetricArray() {}
+
+export function shift(arr, reverse = false) {
   if (reverse) arr.unshift(arr.pop());
   else arr.push(arr.shift());
 }
 
-export function linspace(start, num) {
-  return Array.from({ length: num }, (_, i) => start + i);
+export function nlinspace(start, num, reverse = false, isEnd = true) {
+  const n = isEnd ? num + 1 : num;
+  const k = reverse ? -1 : 1;
+  return Array.from({ length: n }, (_, i) => start + k * i);
 }
 
 export function powerSeriesSum(value, n) {

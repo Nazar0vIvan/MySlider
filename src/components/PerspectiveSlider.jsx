@@ -3,22 +3,22 @@ import {
   createContext,
   useCallback,
   useEffect,
-  useMemo,
   useRef,
   useState,
 } from "react";
-import { linspace, powerSeriesSum, shift } from "../../calc/functions";
+import { nlinspace, powerSeriesSum, shift } from "../../calc/functions";
 
 export const SliderContext = createContext(null);
 
 export function PerspectiveSlider({
   children,
   className = "",
-  scale = 1,
+  scaleFactor = 1,
   gap = 0,
+  navigation = {},
 }) {
-  const [offsets, setOffsets] = useState(
-    linspace(-Math.floor(children.length / 2), children.length)
+  const [offsetIndices, setoOffsetIndices] = useState(
+    nlinspace(-Math.floor(children.length / 2), children.length - 1)
   );
   const slideRef = useRef();
   const sliderRef = useRef();
@@ -26,48 +26,77 @@ export function PerspectiveSlider({
   const updateSize = useCallback(() => {
     const w = slideRef.current.clientWidth;
     const n = children.length;
-    const k = n % 2 == 0 ? 1 : 2;
     const sliderWidth =
       w +
       (n - 1) * gap +
       w *
-        (2 * powerSeriesSum(scale, Math.floor(n / 2) - 1) +
-          k * Math.pow(scale, Math.floor(n / 2)));
+        (2 * powerSeriesSum(scaleFactor, Math.floor(n / 2) - 1) +
+          2 * Math.pow(scaleFactor, Math.floor(n / 2)));
 
     sliderRef.current.style.width = `${sliderWidth}px`;
     sliderRef.current.style.height = `${slideRef.current.clientHeight}px`;
-  });
+  }, []);
 
   useEffect(() => {
     updateSize();
   }, []);
 
-  const handleSlideClick = useCallback((offset) => {
-    let newOffsets = [...offsets]; // copy
-    for (let i = 0; i < Math.abs(offset); ++i) {
-      shift(newOffsets, offset > 0);
+  useEffect(() => {
+    if (!navigation.prev) return;
+    const prevBtn = document.querySelector(navigation.prev);
+    prevBtn.addEventListener("click", handleClickPrev);
+
+    if (!navigation.next) return;
+    const nextBtn = document.querySelector(navigation.next);
+    nextBtn.addEventListener("click", handleClickNext);
+
+    return () => {
+      prevBtn.removeEventListener("click", handleClickPrev);
+      nextBtn.removeEventListener("click", handleClickNext);
+    };
+  }, [offsetIndices]);
+
+  function handleSlideClick(offsetIndex) {
+    let newOffsetsIndices = [...offsetIndices]; // copy
+    for (let i = 0; i < Math.abs(offsetIndex); ++i) {
+      shift(newOffsetsIndices, offsetIndex > 0);
     }
-    setOffsets(newOffsets);
-  });
+    setoOffsetIndices(newOffsetsIndices);
+  }
+
+  function handleClickNext() {
+    let newOffsetsIndices = [...offsetIndices]; // copy
+    shift(newOffsetsIndices, false);
+    setoOffsetIndices(newOffsetsIndices);
+  }
+
+  function handleClickPrev() {
+    let newOffsetsIndices = [...offsetIndices]; // copy
+    shift(newOffsetsIndices, true);
+    setoOffsetIndices(newOffsetsIndices);
+  }
 
   function renderSlides() {
     return children.map((child, index) => {
       const perspective = 1;
-      const offsetIndex = offsets[index];
-      const f = Math.abs(offsetIndex);
-      const dz = -perspective * (1 / Math.pow(scale, f) - 1);
-      const perspectiveScale = Math.abs(dz) / perspective + 1;
-      const sign = Math.sign(offsetIndex);
-      const dx = `calc(${sign} * ${perspectiveScale} * (50% + ${
-        f * gap
-      }px + 100% * ${powerSeriesSum(scale, f - 1) + Math.pow(scale, f) / 2}))`;
+      const offsetIndex = offsetIndices[index];
+      const aoi = Math.abs(offsetIndex);
+      const dz = -perspective * (1 / Math.pow(scaleFactor, aoi) - 1);
 
-      const br = 100 - 20 * f;
+      const perspectiveFactor = Math.abs(dz) / perspective + 1;
+      const sign = Math.sign(offsetIndex);
+      const dx = `calc(${sign} * ${perspectiveFactor} * (50% + ${
+        aoi * gap
+      }px + 100% * ${
+        powerSeriesSum(scaleFactor, aoi - 1) + Math.pow(scaleFactor, aoi) / 2
+      }))`;
+
+      const op = 1.0 - 0.25 * aoi;
 
       const style = {
         "--dx": `${dx}`,
         "--dz": `${dz}px`,
-        "--br": `${br}%`,
+        "--op": `${op}`,
       };
 
       return cloneElement(child, {
@@ -88,8 +117,38 @@ export function PerspectiveSlider({
   );
 }
 
+/*   const renderSlides = useCallback(() => {
+    return children.map((child, index) => {
+      const perspective = 1;
+      const offsetIndex = offsets[index];
+      const f = Math.abs(offsetIndex);
+      const dz = -perspective * (1 / Math.pow(scaleFactor, f) - 1);
+      const perspectivescaleFactor = Math.abs(dz) / perspective + 1;
+      const sign = Math.sign(offsetIndex);
+      const dx = `calc(${sign} * ${perspectivescaleFactor} * (50% + ${
+        f * gap
+      }px + 100% * ${powerSeriesSum(scaleFactor, f - 1) + Math.pow(scaleFactor, f) / 2}))`;
+
+      const br = 100 - 20 * f;
+
+      const style = {
+        "--dx": `${dx}`,
+        "--dz": `${dz}px`,
+        "--br": `${br}%`,
+      };
+
+      return cloneElement(child, {
+        ref: slideRef,
+        offsetIndex,
+        style,
+        handleSlideClick,
+      });
+    });
+  });
+ */
+
 /* 
-export function Slider({ slides, scale, gap }) {
+export function Slider({ slides, scaleFactor, gap }) {
   const [offsets, setOffsets] = useState(
     linspace(-Math.floor(slides.length / 2), slides.length)
   );
@@ -122,7 +181,7 @@ export function Slider({ slides, scale, gap }) {
               key={id}
               icon={icon}
               offset={offsets[i]}
-              scale={scale}
+              scaleFactor={scaleFactor}
               gap={gap}
               handleSlideClick={handleSlideClick}
             />

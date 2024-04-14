@@ -9,10 +9,15 @@ function Home() {
     <div className="home">
       <input
         type="image"
-        className="slider-btn-prev"
+        className="slider-btn slider-btn-prev"
         src="arrow-prev.svg"
       ></input>
-      <PerspectiveSlider className="slider" scale={0.7} gap={50}>
+      <PerspectiveSlider
+        className="slider"
+        scaleFactor={0.7}
+        gap={100}
+        navigation={{ prev: ".slider-btn-prev", next: ".slider-btn-next" }}
+      >
         {slides.map(({ id, title, icon }) => {
           return (
             <Slide key={id} className="slide">
@@ -23,7 +28,7 @@ function Home() {
       </PerspectiveSlider>
       <input
         type="image"
-        className="slider-btn-next"
+        className="slider-btn slider-btn-next"
         src="arrow-next.svg"
       ></input>
     </div>
