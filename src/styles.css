@@ -41,12 +41,10 @@ body {
 
 /* SLIDER */
 
-
 .slider {
   display: flex;
   justify-content: center;
   position: relative;
-
 }
 
 .slide {
@@ -59,7 +57,6 @@ body {
 
 .slide:hover {
   opacity: 1;
-  transform: translate3d(var(--dx), 0, var(--dz));
 }
 
 .slide-icon {
@@ -69,22 +66,4 @@ body {
 
 .perspective {
   perspective: 1px;
-}
-
-.slider-btn-prev {
-  height: 30px;
-  opacity: 0.6;
-}
-
-.slider-btn {
-  height: 30px;
-  opacity: 0.6;
-}
-
-.slider-btn:hover {
-  opacity: 1;
-}
-
-.slider-btn:active {
-  opacity: 0.6;
 }

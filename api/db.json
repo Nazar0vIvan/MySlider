@@ -3,37 +3,44 @@
     {
       "id": 0,
       "title": "C++",
-      "icon": "logo-cpp.svg"
+      "icon": "logo-cpp.svg",
+      "meme": "meme-cpp.jpg"
     },
     {
       "id": 1,
       "title": "JavaScript",
-      "icon": "logo-js.svg"
+      "icon": "logo-js.svg",
+      "meme": "meme-cpp.jpg"
     },
     {
       "id": 2,
       "title": "React",
-      "icon": "logo-react.svg"
+      "icon": "logo-react.svg",
+      "meme": "meme-cpp.jpg"
     },
     {
       "id": 3,
       "title": "QML",
-      "icon": "logo-qml.svg"
+      "icon": "logo-qml.svg",
+      "meme": "meme-cpp.jpg"
     },
     {
       "id": 4,
       "title": "Python",
-      "icon": "logo-python.svg"
+      "icon": "logo-python.svg",
+      "meme": "meme-cpp.jpg"
     },
     {
       "id": 5,
       "title": "CMake",
-      "icon": "logo-cmake.svg"
+      "icon": "logo-cmake.svg",
+      "meme": "meme-cpp.jpg"
     },
     {
       "id": 6,
       "title": "houdini",
-      "icon": "logo-houdini.svg"
+      "icon": "logo-houdini.svg",
+      "meme": "meme-cpp.jpg"
     }
   ]
 }
